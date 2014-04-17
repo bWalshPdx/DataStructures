@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeCoinProblems", "FakeCoinProblems\FakeCoinProblems.csproj", "{772A5BD6-69A9-4D2E-B48F-7781FD854317}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeCoinProblems_Tests", "FakeCoinProblems_Tests\FakeCoinProblems_Tests.csproj", "{45E83FFE-1538-4C7C-92A2-76A2A2502076}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{772A5BD6-69A9-4D2E-B48F-7781FD854317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{772A5BD6-69A9-4D2E-B48F-7781FD854317}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{772A5BD6-69A9-4D2E-B48F-7781FD854317}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{772A5BD6-69A9-4D2E-B48F-7781FD854317}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45E83FFE-1538-4C7C-92A2-76A2A2502076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E83FFE-1538-4C7C-92A2-76A2A2502076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E83FFE-1538-4C7C-92A2-76A2A2502076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E83FFE-1538-4C7C-92A2-76A2A2502076}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
