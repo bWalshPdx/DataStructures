@@ -15,8 +15,6 @@ namespace BinaryTree
         [Test]
         public void InsertValue_IntegrationTest()
         {
-
-
             Tree tree = new Tree(0);
 
             for (int i = 1; i < 5; i++)
@@ -41,7 +39,7 @@ namespace BinaryTree
 
         }
 
-        [Test]
+        [Test,Ignore]
         public void TreeIsValid()
         {
             Random rnd = new Random();
@@ -77,8 +75,6 @@ namespace BinaryTree
 
         }
 
-
-        //TODO: <NA> Finish this test for flattening tree's then test simple tree balance:
         [Test]
         public void FlattenTree_IntegrationTest()
         {
@@ -122,6 +118,26 @@ namespace BinaryTree
 
             var stuff = "";
 
+        }
+
+
+        //TODO: Ensure GetTargetNode returns a null value
+        [Test]
+        public void GetTargetNode_IntegrationTest()
+        {
+            Tree t = new Tree(5);
+            t.InsertValue(3);
+            t.InsertValue(4);
+
+            Queue<Tree.Direction> path = new Queue<Tree.Direction>();
+            //path.Enqueue(false);
+            //path.Enqueue(true);
+            path.Enqueue(Tree.Direction.Right);
+            path.Enqueue(Tree.Direction.Right);
+
+            var output = t.GetTargetNode(path);
+
+            Assert.AreEqual(null, output);
         }
 
 

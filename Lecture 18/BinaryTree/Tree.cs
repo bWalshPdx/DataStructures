@@ -14,10 +14,19 @@ namespace BinaryTree
             this.RootNode = new Node(value);
         }
 
+        public Tree(Node node)
+        {
+            RootNode = node;
+        }
+
+        public Tree()
+        {
+            RootNode = new Node();
+        }
         
         public void InsertValue(int value)
         {
-            InsertValue(this.RootNode, value);
+            InsertValue(RootNode, value);
         }
 
         public void InsertValue(Node currentNode, int value)
@@ -197,6 +206,31 @@ namespace BinaryTree
             else
             {
                 return right;
+            }
+        }
+
+        public enum Direction { Right, Left };
+
+        public Node GetTargetNode(Queue<Direction> nav)
+        {
+            var temp = getTargetNode(nav, RootNode);
+            return temp;
+        }
+
+        private Node getTargetNode(Queue<Direction> navigation, Node node)
+        {
+            if (node == null || navigation.Count == 0)
+                return node;
+
+            if (navigation.Dequeue() == Direction.Right)
+            {
+                var temp = getTargetNode(navigation, node.RightNode);
+                return temp;
+            }
+            else
+            {
+                var temp = getTargetNode(navigation, node.LeftNode);
+                return temp;
             }
         }
 
