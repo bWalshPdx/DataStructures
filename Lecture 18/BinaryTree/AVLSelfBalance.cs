@@ -7,8 +7,6 @@ using System.Collections;
 
 namespace BinaryTree
 {
-    
-
     public class AVLSelfBalance
     {
         public Node RootNode = new Node();
@@ -61,15 +59,14 @@ namespace BinaryTree
             var balanceValue = GetBalanceValue(currentNode);
 
             if (balanceValue <= -2)
-               currentNode = RR(currentNode);
+               currentNode = Rotate(currentNode, true);
 
             if (2 <= balanceValue)
-                currentNode = LL(currentNode);
+                currentNode = Rotate(currentNode, false);
 
             return currentNode;
         }
 
-        //TODO: Make sure this looks right:
         public int GetBalanceValue(Node node)
         {
             var leftDepth = 0;
@@ -119,48 +116,47 @@ namespace BinaryTree
             
             return depth;
         }
-
-        public Node LL(Node node)
+       
+        public Node Rotate(Node node, bool rotateRight)
         {
+            bool goRight = false;
+            
+            if (rotateRight)
+                goRight = rotateRight;
+
             Tree t = new Tree(node);
             //Move from the children to the root:
             //Get Children of Children
-            var newRightLeftChild = t.GetTargetNode(new Queue<Tree.Direction>(new[] { Tree.Direction.Left, Tree.Direction.Right }));
-            //Get Direct Children
-            var newLeftChild = t.GetTargetNode(new Queue<Tree.Direction>(new[] { Tree.Direction.Left, Tree.Direction.Left }));
-            var newRightChild = node;
-            //Get New Root
-            var newRoot = t.GetTargetNode(new Queue<Tree.Direction>(new[] { Tree.Direction.Left}));
-
-            //Attach Children of Children to Direct Children
-            newRightChild.LeftNode = newRightLeftChild;
-
-            //Attach Children to Root
-            newRoot.LeftNode = newLeftChild;
-            newRoot.RightNode = newRightChild;
-
-            return newRoot;
-        }
-
-        //TODO: Look at why this is creating a infinite Right Child when referencing RootNode rather than its output
-        //My references are all messed up.
-        public Node RR(Node node)
-        {
-            Tree t = new Tree(node);
-            //Move from the children to the root:
-            //Get Children of Children
-            var newLeftRightChild = t.GetTargetNode(new Queue<Tree.Direction>(new[] { Tree.Direction.Right, Tree.Direction.Left }));
+            var orphanChild = t.GetTargetNode(new Queue<bool>(new[] { goRight, !goRight}));
             //Get Direct Children
             var newLeftChild = node;
-            var newRightChild = t.GetTargetNode(new Queue<Tree.Direction>(new[] { Tree.Direction.Right, Tree.Direction.Right }));
+            var tailOfRoot = t.GetTargetNode(new Queue<bool>(new[] { goRight, goRight}));
             //Get New Root
-            var newRoot = t.GetTargetNode(new Queue<Tree.Direction>(new[] { Tree.Direction.Right }));
+            var newRoot = t.GetTargetNode(new Queue<bool>(new[] { goRight}));
             
+
+            //Perform Rotation:
             //Attach Children of Children to Direct Children
-            newLeftChild.RightNode = newLeftRightChild;
-            //Attach Children to Root
-            newRoot.LeftNode = newLeftChild;
-            newRoot.RightNode = newRightChild;
+            if (goRight)
+            {
+                newLeftChild.RightNode = orphanChild;
+            }
+            else
+            {
+                newLeftChild.LeftNode = orphanChild;
+            }
+
+            //Attach Children to Root:
+            if (goRight)
+            {
+                newRoot.LeftNode = newLeftChild;
+                newRoot.RightNode = tailOfRoot;
+            }
+            else
+            {
+                newRoot.RightNode = newLeftChild;
+                newRoot.LeftNode = tailOfRoot;
+            }
 
             return newRoot;
         }

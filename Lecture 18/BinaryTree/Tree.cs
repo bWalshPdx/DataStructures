@@ -56,8 +56,6 @@ namespace BinaryTree
                     InsertValue(currentNode.RightNode, value);
                 }
             }
-            //Equals zero in which cas it has already been inserted
-
         }
 
         public bool IsTreeValid()
@@ -73,13 +71,11 @@ namespace BinaryTree
             return leftIsValid && rightIsValid;
         }
 
-
         public Node DeleteNode(int value)
         {
             return DeleteNode(value, this.RootNode);
         }
 
-        
         public Node DeleteNode(int value, Node node)
         {
             if (node == null)
@@ -144,43 +140,6 @@ namespace BinaryTree
             return node.Value.Value;
         }
 
-        public int GetSecondMaxDepth(Node node, int maxDepth)
-        {
-            return GetSecondMaxDepth(node, maxDepth, 1);
-        }
-
-        public int GetSecondMaxDepth(Node node, int maxDepth, int currentDepth)
-        {
-            if (node.RightNode == null && node.LeftNode == null)
-                return currentDepth;
-
-            int right = 0;
-            if (node.RightNode != null)
-                right = GetSecondMaxDepth(node.RightNode, maxDepth, currentDepth + 1);
-
-            int left = 0;
-            if (node.LeftNode != null)
-                left = GetSecondMaxDepth(node.LeftNode, maxDepth, currentDepth + 1);
-
-            if (right < left)
-            {
-                if (left != maxDepth)
-                    return left;
-
-                return right;
-            }
-
-            if (left <= right)
-            {
-                if (right != maxDepth)
-                    return right;
-
-                return left;
-            }
-
-            throw new Exception("this is not supposed to happen");
-        }
-
         public int GetMaxDepth(Node node)
         {
             return GetMaxDepth(node, 1);
@@ -209,20 +168,19 @@ namespace BinaryTree
             }
         }
 
-        public enum Direction { Right, Left };
-
-        public Node GetTargetNode(Queue<Direction> nav)
+        public Node GetTargetNode(Queue<bool> nav)
         {
             var temp = getTargetNode(nav, RootNode);
             return temp;
         }
 
-        private Node getTargetNode(Queue<Direction> navigation, Node node)
+        private Node getTargetNode(Queue<bool> navigation, Node node)
         {
             if (node == null || navigation.Count == 0)
                 return node;
 
-            if (navigation.Dequeue() == Direction.Right)
+            //Going right:
+            if (navigation.Dequeue())
             {
                 var temp = getTargetNode(navigation, node.RightNode);
                 return temp;

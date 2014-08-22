@@ -129,11 +129,11 @@ namespace BinaryTree
             t.InsertValue(3);
             t.InsertValue(4);
 
-            Queue<Tree.Direction> path = new Queue<Tree.Direction>();
+            Queue<bool> path = new Queue<bool>();
             //path.Enqueue(false);
             //path.Enqueue(true);
-            path.Enqueue(Tree.Direction.Right);
-            path.Enqueue(Tree.Direction.Right);
+            path.Enqueue(true);
+            path.Enqueue(true);
 
             var output = t.GetTargetNode(path);
 

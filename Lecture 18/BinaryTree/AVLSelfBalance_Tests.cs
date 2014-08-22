@@ -98,8 +98,8 @@ namespace BinaryTree
                 threeRightTree.RightNode = new Node(60);
                 threeRightTree.RightNode.RightNode = new Node(70);
 
-                yield return new TestCaseData(preRotatedTree, -2).SetName("Pre RR Shifted Tree");
-                yield return new TestCaseData(postRotatedTree, -1).SetName("Post RR Shifted Tree");
+                yield return new TestCaseData(preRotatedTree, -2).SetName("Pre Rotate Shifted Tree");
+                yield return new TestCaseData(postRotatedTree, -1).SetName("Post Rotate Shifted Tree");
                 yield return new TestCaseData(balancedTree, 0).SetName("Balanced Tree");
                 yield return new TestCaseData(threeRightTree, -2).SetName("Three Right Tree");
                 
@@ -134,17 +134,17 @@ namespace BinaryTree
         {
             Tree t = this.LLTestTree();
 
-            Node node = new Node(90);
-            node.LeftNode = new Node(80);
-            node.RightNode= new Node(99);
+            Node expectedOutput = new Node(90);
+            expectedOutput.LeftNode = new Node(80);
+            expectedOutput.RightNode= new Node(99);
 
             AVLSelfBalance tr = new AVLSelfBalance();
 
-            var output = tr.LL(t.RootNode);
+            var output = tr.Rotate(t.RootNode, false);
 
-            Assert.AreEqual(output.Value, node.Value);
-            Assert.AreEqual(output.LeftNode.Value, node.LeftNode.Value);
-            Assert.AreEqual(output.RightNode.Value, node.RightNode.Value);
+            Assert.AreEqual(output.Value, expectedOutput.Value);
+            Assert.AreEqual(output.LeftNode.Value, expectedOutput.LeftNode.Value);
+            Assert.AreEqual(output.RightNode.Value, expectedOutput.RightNode.Value);
 
         }
 
@@ -169,7 +169,7 @@ namespace BinaryTree
             //TODO: Finish this test:
             AVLSelfBalance tr = new AVLSelfBalance();
 
-            var output = tr.RR(t.RootNode);
+            var output = tr.Rotate(t.RootNode, true);
 
             Assert.AreEqual(output.Value, correctlyRotatedTree.Value);
             Assert.AreEqual(output.RightNode.Value, correctlyRotatedTree.RightNode.Value);
@@ -217,7 +217,7 @@ namespace BinaryTree
             var expectedOutput = this.RR_NewBalancedTree();
             
             AVLSelfBalance tr = new AVLSelfBalance();
-            var output = tr.RR(RightLeaningTree());
+            var output = tr.Rotate(RightLeaningTree(), true);
             
 
             Assert.AreEqual(output.Value, expectedOutput.Value);
@@ -237,7 +237,7 @@ namespace BinaryTree
         public void RR_RotatesCorrectly_NoChildrenPastExpectedLeaves()
         {
             AVLSelfBalance tr = new AVLSelfBalance();
-            var output = tr.RR(RightLeaningTree());
+            var output = tr.Rotate(RightLeaningTree(), true);
             //var output = RR_NewBalancedTree();
 
             Assert.IsNull(output.LeftNode.LeftNode.LeftNode);
@@ -293,7 +293,7 @@ namespace BinaryTree
             var expectedOutput = LL_NewBalancedTree();
 
             AVLSelfBalance tr = new AVLSelfBalance();
-            var output = tr.LL(LeftLeaningTree());
+            var output = tr.Rotate(LeftLeaningTree(), false);
 
             Assert.AreEqual(output.Value, expectedOutput.Value);
 
@@ -312,7 +312,7 @@ namespace BinaryTree
         public void LL_RotatesCorrectly_NoChildrenPastExpectedLeaves()
         {
             AVLSelfBalance tr = new AVLSelfBalance();
-            var output = tr.RR(RightLeaningTree());
+            var output = tr.Rotate(RightLeaningTree(), true);
             //var output = RR_NewBalancedTree();
 
             Assert.IsNull(output.LeftNode.LeftNode.LeftNode);
@@ -396,7 +396,22 @@ namespace BinaryTree
 
             Assert.AreEqual(output.Value, expectedOutput.Value);
             Assert.AreEqual(output.RightNode.Value, expectedOutput.RightNode.Value);
-            Assert.AreEqual(output.LeftNode.Value, testTree.LeftNode.Value);
+            Assert.AreEqual(output.LeftNode.Value, expectedOutput.LeftNode.Value);
+        }
+
+        [Test]
+        public void GetTargetNode_GetsTheRightNode()
+        {
+            Node testTree = new Node(50);
+            testTree.LeftNode = new Node(40);
+            testTree.RightNode = new Node(60);
+
+            Tree t = new Tree(testTree);
+
+
+            var output = t.GetTargetNode(new Queue<bool>(new[] { false}));
+
+            Assert.AreEqual(40, output.Value);
         }
     }
 }
