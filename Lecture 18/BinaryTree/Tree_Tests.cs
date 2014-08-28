@@ -15,7 +15,7 @@ namespace BinaryTree
         [Test]
         public void InsertValue_IntegrationTest()
         {
-            Tree tree = new Tree(0);
+            var tree = new Tree<int>(0);
 
             for (int i = 1; i < 5; i++)
             {
@@ -29,7 +29,7 @@ namespace BinaryTree
         {
             Random rnd = new Random();
             
-            Tree tree = new Tree(0);
+            var tree = new Tree<int>(0);
 
             for (int i = 0; i < 20; i++)
             {
@@ -39,47 +39,47 @@ namespace BinaryTree
 
         }
 
-        [Test,Ignore]
-        public void TreeIsValid()
-        {
-            Random rnd = new Random();
+        //[Test,Ignore]
+        //public void TreeIsValid()
+        //{
+        //    Random rnd = new Random();
 
-            Tree tree = new Tree(0);
+        //    Tree tree = new Tree(0);
 
-            for (int i = 0; i < 20; i++)
-            {
-                int randomNum = rnd.Next(1, 13);
-                tree.InsertValue(randomNum);
-            }
+        //    for (int i = 0; i < 20; i++)
+        //    {
+        //        int randomNum = rnd.Next(1, 13);
+        //        tree.InsertValue(randomNum);
+        //    }
 
-            var output = tree.IsTreeValid();
+        //    var output = tree.IsTreeValid();
 
-            Assert.That(output);
-        }
+        //    Assert.That(output);
+        //}
 
-        [Test]
-        public void DeleteNode()
-        {
-            Tree tree = new Tree(30);
-            int[] nodesToAdd = new int[]{20, 40, 35, 45, 42, 47};
+        //[Test]
+        //public void DeleteNode()
+        //{
+        //    Tree tree = new Tree(30);
+        //    int[] nodesToAdd = new int[]{20, 40, 35, 45, 42, 47};
 
-            foreach (var node in nodesToAdd)
-            {
-                tree.InsertValue(node);
-            }
+        //    foreach (var node in nodesToAdd)
+        //    {
+        //        tree.InsertValue(node);
+        //    }
 
-            tree.DeleteNode(42);
-            tree.DeleteNode(45);
+        //    tree.DeleteNode(42);
+        //    tree.DeleteNode(45);
 
-            Console.WriteLine("Stop");
+        //    Console.WriteLine("Stop");
 
-        }
+        //}
 
         [Test]
         public void FlattenTree_IntegrationTest()
         {
-            NaiveTreeBalance to = new NaiveTreeBalance();
-            Tree tree = new Tree(30);
+            var to = new NaiveTreeBalance<int>();
+            var tree = new Tree<int>(30);
             int[] nodesToAdd = new int[] { 20, 40, 35, 45, 42, 47 };
 
             foreach (var node in nodesToAdd)
@@ -112,7 +112,7 @@ namespace BinaryTree
         public void MakeTree_IntegrationTest()
         {
             List<int> oracleList = new List<int>() { 20, 30, 40, 35, 45, 42, 47 };
-            NaiveTreeBalance to = new NaiveTreeBalance();
+            var to = new NaiveTreeBalance<int>();
 
             var newTree = to.MakeTree(oracleList.OrderBy(v => v).ToList());
 
@@ -120,24 +120,20 @@ namespace BinaryTree
 
         }
 
-
-        //TODO: Ensure GetTargetNode returns a null value
         [Test]
         public void GetTargetNode_IntegrationTest()
         {
-            Tree t = new Tree(5);
-            t.InsertValue(3);
-            t.InsertValue(4);
+            var lowChild = new Node<int>(30);
+            var midChild = new Node<int>(20) {LeftNode = null, RightNode = lowChild};
+            var root = new Node<int>() { LeftNode = null, RightNode = midChild };
 
             Queue<bool> path = new Queue<bool>();
-            //path.Enqueue(false);
-            //path.Enqueue(true);
             path.Enqueue(true);
             path.Enqueue(true);
 
-            var output = t.GetTargetNode(path);
+            var output = Utilities.GetTargetNode(path, root);
 
-            Assert.AreEqual(null, output);
+            Assert.AreEqual(30, output.Value);
         }
 
 

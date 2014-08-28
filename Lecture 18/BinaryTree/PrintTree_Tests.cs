@@ -17,13 +17,13 @@ namespace BinaryTree
         public void IntegrationTest()
         {
             
-            Tree tree = new Tree(5);
+            var tree = new Tree<int>(5);
 
             tree.InsertValue(0);
             tree.InsertValue(1);
             tree.InsertValue(6);
 
-            PrintTree pt = new PrintTree();
+            var pt = new PrintTree<int>();
 
             int depth = pt.GetTreeDepth(tree.RootNode);
 

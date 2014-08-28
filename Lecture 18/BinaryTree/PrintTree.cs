@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace BinaryTree
 {
-    public class PrintTree
+    public class PrintTree<T> where T : IComparable
     {
 
-        public int GetTreeDepth(Node node)
+        public int GetTreeDepth(Node<T> node)
         {
             return getTreeDepth(0, node);
         }
 
 
-        public int getTreeDepth(int currentDepth, Node node)
+        public int getTreeDepth(int currentDepth, Node<T> node)
         {
             int? LeftDepth = null;
             int? RightDepth = null;
 
             if (node.LeftNode != null)
-                LeftDepth = this.getTreeDepth(currentDepth + 1, node.LeftNode);
+                LeftDepth = getTreeDepth(currentDepth + 1, node.LeftNode);
 
             if (node.RightNode != null)
-                RightDepth = this.getTreeDepth(currentDepth + 1, node.RightNode);
+                RightDepth = getTreeDepth(currentDepth + 1, node.RightNode);
 
             if (RightDepth == null && LeftDepth == null)
                 return currentDepth;

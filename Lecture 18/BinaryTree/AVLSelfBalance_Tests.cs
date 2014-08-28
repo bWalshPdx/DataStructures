@@ -11,9 +11,9 @@ namespace BinaryTree
     [TestFixture]
     public class AVLSelfBalance_Tests
     {
-        public Tree TestTree()
+        public Tree<int> TestTree()
         {
-            Tree t = new Tree(60);
+            Tree<int> t = new Tree<int>(60);
             t.InsertValue(50);
             t.InsertValue(70);
             t.InsertValue(65);
@@ -29,23 +29,23 @@ namespace BinaryTree
         {
             get
             {
-                var zeroDepthTree = new Node(10);
+                var zeroDepthTree = new Node<int>(10);
 
-                var oneDepthTree = new Node(50);
-                oneDepthTree.LeftNode = new Node(40);
-                oneDepthTree.RightNode = new Node(60);
+                var oneDepthTree = new Node<int>(50);
+                oneDepthTree.LeftNode = new Node<int>(40);
+                oneDepthTree.RightNode = new Node<int>(60);
 
-                var twoDepthTree = new Node(70);
-                twoDepthTree.LeftNode = new Node(60);
-                twoDepthTree.RightNode = new Node(80);
-                twoDepthTree.RightNode.RightNode = new Node(90);
+                var twoDepthTree = new Node<int>(70);
+                twoDepthTree.LeftNode = new Node<int>(60);
+                twoDepthTree.RightNode = new Node<int>(80);
+                twoDepthTree.RightNode.RightNode = new Node<int>(90);
 
-                var threeDepthTree = new Node(70);
-                threeDepthTree.LeftNode = new Node(60);
-                threeDepthTree.RightNode = new Node(80);
-                threeDepthTree.RightNode.RightNode = new Node(90);
-                threeDepthTree.RightNode.RightNode.LeftNode = new Node(85);
-                threeDepthTree.RightNode.RightNode.RightNode = new Node(100);
+                var threeDepthTree = new Node<int>(70);
+                threeDepthTree.LeftNode = new Node<int>(60);
+                threeDepthTree.RightNode = new Node<int>(80);
+                threeDepthTree.RightNode.RightNode = new Node<int>(90);
+                threeDepthTree.RightNode.RightNode.LeftNode = new Node<int>(85);
+                threeDepthTree.RightNode.RightNode.RightNode = new Node<int>(100);
 
                 yield return new TestCaseData(zeroDepthTree, 0).SetName("Just the root tree");
                 yield return new TestCaseData(oneDepthTree, 1).SetName("Tree with depth of one");
@@ -57,10 +57,10 @@ namespace BinaryTree
 
 
         [TestCaseSource("TreesAndExpectedDepths")]
-        public void GetMaxDepth_GetCorrectDepth(Node testTree, int expectedDepth)
+        public void GetMaxDepth_GetCorrectDepth(Node<int> testTree, int expectedDepth)
         {
             
-            AVLSelfBalance trb = new AVLSelfBalance();
+            AVLTree<int> trb = new AVLTree<int>();
 
             var output = trb.GetMaxDepth(testTree);
 
@@ -73,30 +73,30 @@ namespace BinaryTree
             
             get
             {
-                var postRotatedTree2 = new Node(60);
-                postRotatedTree2.RightNode = new Node(70);
-                postRotatedTree2.LeftNode = new Node(50);
+                var postRotatedTree2 = new Node<int>(60);
+                postRotatedTree2.RightNode = new Node<int>(70);
+                postRotatedTree2.LeftNode = new Node<int>(50);
 
-                var postRotatedTree = new Node(40);
-                postRotatedTree.LeftNode = new Node(30);
+                var postRotatedTree = new Node<int>(40);
+                postRotatedTree.LeftNode = new Node<int>(30);
                 postRotatedTree.RightNode = postRotatedTree2;
 
 
-                var preRotatedTree2 = new Node(50);
-                preRotatedTree2.RightNode = new Node(60);
-                preRotatedTree2.RightNode.RightNode = new Node(70);
+                var preRotatedTree2 = new Node<int>(50);
+                preRotatedTree2.RightNode = new Node<int>(60);
+                preRotatedTree2.RightNode.RightNode = new Node<int>(70);
 
-                var preRotatedTree = new Node(40);
-                preRotatedTree.LeftNode = new Node(30);
+                var preRotatedTree = new Node<int>(40);
+                preRotatedTree.LeftNode = new Node<int>(30);
                 preRotatedTree.RightNode = preRotatedTree2;
 
-                var balancedTree = new Node(50);
-                balancedTree.RightNode = new Node(60);
-                balancedTree.LeftNode = new Node(70);
+                var balancedTree = new Node<int>(50);
+                balancedTree.RightNode = new Node<int>(60);
+                balancedTree.LeftNode = new Node<int>(70);
 
-                var threeRightTree = new Node(50);
-                threeRightTree.RightNode = new Node(60);
-                threeRightTree.RightNode.RightNode = new Node(70);
+                var threeRightTree = new Node<int>(50);
+                threeRightTree.RightNode = new Node<int>(60);
+                threeRightTree.RightNode.RightNode = new Node<int>(70);
 
                 yield return new TestCaseData(preRotatedTree, -2).SetName("Pre Rotate Shifted Tree");
                 yield return new TestCaseData(postRotatedTree, -1).SetName("Post Rotate Shifted Tree");
@@ -110,19 +110,19 @@ namespace BinaryTree
 
 
         [TestCaseSource("DifferentTreesAndBalances")]
-        public void GetBalanceValue_GetsCorrectValue(Node tree, int expectedBalance)
+        public void GetBalanceValue_GetsCorrectValue(Node<int> tree, int expectedBalance)
         {
 
-            AVLSelfBalance trb = new AVLSelfBalance();
+            AVLTree<int> trb = new AVLTree<int>();
 
             var output = trb.GetBalanceValue(tree);
 
             Assert.AreEqual(expectedBalance, output);
         }
 
-        public Tree LLTestTree()
+        public Tree<int> LLTestTree()
         {
-            Tree t = new Tree(99);
+            var t = new Tree<int>(99);
             t.InsertValue(90);
             t.InsertValue(80);
             
@@ -132,13 +132,13 @@ namespace BinaryTree
         [Test]
         public void LL_RotatesCorrectly()
         {
-            Tree t = this.LLTestTree();
+            Tree<int> t = LLTestTree();
 
-            Node expectedOutput = new Node(90);
-            expectedOutput.LeftNode = new Node(80);
-            expectedOutput.RightNode= new Node(99);
+            Node<int> expectedOutput = new Node<int>(90);
+            expectedOutput.LeftNode = new Node<int>(80);
+            expectedOutput.RightNode= new Node<int>(99);
 
-            AVLSelfBalance tr = new AVLSelfBalance();
+            AVLTree<int> tr = new AVLTree<int>();
 
             var output = tr.Rotate(t.RootNode, false);
 
@@ -148,9 +148,9 @@ namespace BinaryTree
 
         }
 
-        public Tree RRTestTree()
+        public Tree<int> RRTestTree()
         {
-            Tree t = new Tree(50);
+            var t = new Tree<int>(50);
             t.InsertValue(51);
             t.InsertValue(53);
 
@@ -160,14 +160,13 @@ namespace BinaryTree
         [Test]
         public void RR_RotatesCorrectly_TheMainBranchOnly()
         {
-            Tree t = RRTestTree();
+            Tree<int> t = RRTestTree();
 
-            Node correctlyRotatedTree = new Node(51);
-            correctlyRotatedTree.LeftNode = new Node(50);
-            correctlyRotatedTree.RightNode = new Node(53);
+            Node<int> correctlyRotatedTree = new Node<int>(51);
+            correctlyRotatedTree.LeftNode = new Node<int>(50);
+            correctlyRotatedTree.RightNode = new Node<int>(53);
 
-            //TODO: Finish this test:
-            AVLSelfBalance tr = new AVLSelfBalance();
+            AVLTree<int> tr = new AVLTree<int>();
 
             var output = tr.Rotate(t.RootNode, true);
 
@@ -176,34 +175,34 @@ namespace BinaryTree
             Assert.AreEqual(output.LeftNode.Value, correctlyRotatedTree.LeftNode.Value);
         }
 
-        public Node RightLeaningTree()
+        public Node<int> RightLeaningTree()
         {
-            Node tree3 = new Node(70);
-            tree3.LeftNode = new Node(65);
-            tree3.RightNode = new Node(75);
+            var tree3 = new Node<int>(70);
+            tree3.LeftNode = new Node<int>(65);
+            tree3.RightNode = new Node<int>(75);
 
-            Node tree2 = new Node(60);
-            tree2.LeftNode = new Node(55);
+            var tree2 = new Node<int>(60);
+            tree2.LeftNode = new Node<int>(55);
             tree2.RightNode = tree3;
 
-            Node rootNode = new Node(50);
-            rootNode.LeftNode = new Node(40);
+            var rootNode = new Node<int>(50);
+            rootNode.LeftNode = new Node<int>(40);
             rootNode.RightNode = tree2;
 
             return rootNode;
         }
 
-        public Node RR_NewBalancedTree()
+        public Node<int> RR_NewBalancedTree()
         {
-            Node tree3 = new Node(70);
-            tree3.LeftNode = new Node(65);
-            tree3.RightNode = new Node(75);
+            var tree3 = new Node<int>(70);
+            tree3.LeftNode = new Node<int>(65);
+            tree3.RightNode = new Node<int>(75);
 
-            Node tree2 = new Node(50);
-            tree2.LeftNode = new Node(40);
-            tree2.RightNode = new Node(55);
+            var tree2 = new Node<int>(50);
+            tree2.LeftNode = new Node<int>(40);
+            tree2.RightNode = new Node<int>(55);
 
-            Node rootNode = new Node(60);
+            var rootNode = new Node<int>(60);
             rootNode.LeftNode = tree2;
             rootNode.RightNode = tree3;
 
@@ -214,9 +213,9 @@ namespace BinaryTree
         [Test]
         public void RR_RotatesCorrectly_TreeMatchesPreconstructedBalancedTree()
         {
-            var expectedOutput = this.RR_NewBalancedTree();
+            var expectedOutput = RR_NewBalancedTree();
             
-            AVLSelfBalance tr = new AVLSelfBalance();
+            var tr = new AVLTree<int>();
             var output = tr.Rotate(RightLeaningTree(), true);
             
 
@@ -236,7 +235,7 @@ namespace BinaryTree
         [Test]
         public void RR_RotatesCorrectly_NoChildrenPastExpectedLeaves()
         {
-            AVLSelfBalance tr = new AVLSelfBalance();
+            var tr = new AVLTree<int>();
             var output = tr.Rotate(RightLeaningTree(), true);
             //var output = RR_NewBalancedTree();
 
@@ -253,34 +252,34 @@ namespace BinaryTree
             Assert.IsNull(output.RightNode.RightNode.RightNode);
         }
 
-        public Node LeftLeaningTree()
+        public Node<int> LeftLeaningTree()
         {
-            Node tree3 = new Node(30);
-            tree3.LeftNode = new Node(20);
-            tree3.RightNode = new Node(25);
+            var tree3 = new Node<int>(30);
+            tree3.LeftNode = new Node<int>(20);
+            tree3.RightNode = new Node<int>(25);
 
-            Node tree2 = new Node(40);
+            var tree2 = new Node<int>(40);
             tree2.LeftNode = tree3;
-            tree2.RightNode = new Node(45);
+            tree2.RightNode = new Node<int>(45);
 
-            Node rootNode = new Node(50);
+            var rootNode = new Node<int>(50);
             rootNode.LeftNode = tree2;
-            rootNode.RightNode = new Node(60);
+            rootNode.RightNode = new Node<int>(60);
 
             return rootNode;
         }
 
-        public Node LL_NewBalancedTree()
+        public Node<int> LL_NewBalancedTree()
         {
-            Node tree3 = new Node(50);
-            tree3.LeftNode = new Node(45);
-            tree3.RightNode = new Node(60);
+            var tree3 = new Node<int>(50);
+            tree3.LeftNode = new Node<int>(45);
+            tree3.RightNode = new Node<int>(60);
 
-            Node tree2 = new Node(30);
-            tree2.LeftNode = new Node(20);
-            tree2.RightNode = new Node(25);
+            var tree2 = new Node<int>(30);
+            tree2.LeftNode = new Node<int>(20);
+            tree2.RightNode = new Node<int>(25);
 
-            Node rootNode = new Node(40);
+            var rootNode = new Node<int>(40);
             rootNode.LeftNode = tree2;
             rootNode.RightNode = tree3;
 
@@ -292,7 +291,7 @@ namespace BinaryTree
         {
             var expectedOutput = LL_NewBalancedTree();
 
-            AVLSelfBalance tr = new AVLSelfBalance();
+            var tr = new AVLTree<int>();
             var output = tr.Rotate(LeftLeaningTree(), false);
 
             Assert.AreEqual(output.Value, expectedOutput.Value);
@@ -311,7 +310,7 @@ namespace BinaryTree
         [Test]
         public void LL_RotatesCorrectly_NoChildrenPastExpectedLeaves()
         {
-            AVLSelfBalance tr = new AVLSelfBalance();
+            var tr = new AVLTree<int>();
             var output = tr.Rotate(RightLeaningTree(), true);
             //var output = RR_NewBalancedTree();
 
@@ -330,28 +329,28 @@ namespace BinaryTree
 
 
 
-        public Node RR_AVLTestTree()
+        public Node<int> RR_AVLTestTree()
         {
-            Node tree2 = new Node(50);
-            tree2.RightNode = new Node(60);
+            var tree2 = new Node<int>(50);
+            tree2.RightNode = new Node<int>(60);
 
-            Node root = new Node(40);
+            var root = new Node<int>(40);
             root.RightNode = tree2;
-            root.LeftNode = new Node(30);
+            root.LeftNode = new Node<int>(30);
 
             return root;
         }
 
-        public Node RR_AVLBalancedTree()
+        public Node<int> RR_AVLBalancedTree()
         {
             
-            Node tree2 = new Node(60);
-            tree2.RightNode = new Node(70);
-            tree2.LeftNode = new Node(50);
+            var tree2 = new Node<int>(60);
+            tree2.RightNode = new Node<int>(70);
+            tree2.LeftNode = new Node<int>(50);
 
-            Node root = new Node(40);
+            var root = new Node<int>(40);
             root.RightNode = tree2;
-            root.LeftNode = new Node(30);
+            root.LeftNode = new Node<int>(30);
 
             return root;
         }
@@ -362,7 +361,7 @@ namespace BinaryTree
             var expectedOutput = RR_AVLBalancedTree();
 
             var avlTree = RR_AVLTestTree();
-            AVLSelfBalance tr = new AVLSelfBalance(avlTree);
+            var tr = new AVLTree<int>(avlTree);
 
             tr.InsertValue(70);
 
@@ -377,19 +376,19 @@ namespace BinaryTree
             Assert.AreEqual(output.RightNode.LeftNode.Value, expectedOutput.RightNode.LeftNode.Value);
             
         }
-        //TODO: Write the test that checks if the root node get rotated correctly:
+        
 
         [Test]
         public void InserValue_RootRotationHappens()
         {
-            Node testTree = new Node(3);
-            testTree.RightNode = new Node(5);
+            var testTree = new Node<int>(3);
+            testTree.RightNode = new Node<int>(5);
 
-            Node expectedOutput = new Node(5);
-            expectedOutput.RightNode = new Node(7);
-            expectedOutput.LeftNode = new Node(3);
+            var expectedOutput = new Node<int>(5);
+            expectedOutput.RightNode = new Node<int>(7);
+            expectedOutput.LeftNode = new Node<int>(3);
 
-            AVLSelfBalance tr = new AVLSelfBalance(testTree);
+            var tr = new AVLTree<int>(testTree);
             tr.InsertValue(7);
 
             var output = tr.RootNode;
@@ -402,14 +401,11 @@ namespace BinaryTree
         [Test]
         public void GetTargetNode_GetsTheRightNode()
         {
-            Node testTree = new Node(50);
-            testTree.LeftNode = new Node(40);
-            testTree.RightNode = new Node(60);
+            var testTree = new Node<int>(50);
+            testTree.LeftNode = new Node<int>(40);
+            testTree.RightNode = new Node<int>(60);
 
-            Tree t = new Tree(testTree);
-
-
-            var output = t.GetTargetNode(new Queue<bool>(new[] { false}));
+            var output = Utilities.GetTargetNode(new Queue<bool>(new[] { false}), testTree);
 
             Assert.AreEqual(40, output.Value);
         }

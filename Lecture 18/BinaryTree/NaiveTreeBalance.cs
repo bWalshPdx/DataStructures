@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace BinaryTree
 {
-    class NaiveTreeBalance
+    class NaiveTreeBalance<T>
     {
-        public List<int> FlattenTree(Node node)
+        
+        public List<T> FlattenTree(Node<T> node)
         {
-            List<int> flatTree = new List<int>();
+            List<T> flatTree = new List<T>();
 
             //Add value to list
             if (node.Value != null)
             {
-                flatTree.Add(node.Value.Value);
+                flatTree.Add(node.Value);
             }
 
             if (node.LeftNode != null)
@@ -28,14 +29,14 @@ namespace BinaryTree
             return flatTree;
         }
 
-        public Node MakeTree(List<int> valueList)
+        public Node<T> MakeTree(List<T> valueList)
         {
             if (valueList.Count == 0)
-                return new Node();
+                return new Node<T>();
 
             int midElement = valueList.Count / 2;
 
-            return new Node(valueList[midElement])
+            return new Node<T>(valueList[midElement])
             {
                 LeftNode = MakeTree(valueList.Take(midElement).ToList()),
                 RightNode = MakeTree(valueList.Skip(midElement + 1).ToList())

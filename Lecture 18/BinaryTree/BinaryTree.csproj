@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="NaiveTreeBalance.cs" />
     <Compile Include="AVLSelfBalance_Tests.cs" />
-    <Compile Include="AVLSelfBalance.cs" />
+    <Compile Include="AVLTree.cs" />
     <Compile Include="PrintTree.cs" />
     <Compile Include="PrintTree_Tests.cs" />
     <Compile Include="Tree.cs" />

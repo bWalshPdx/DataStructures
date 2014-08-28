@@ -6,50 +6,50 @@ using System.Threading.Tasks;
 
 namespace BinaryTree
 {
-    public class Tree
+    public class Tree<T> where T : IComparable
     {
-        public Node RootNode;
-        public Tree(int value)
+        public Node<T> RootNode { get; set;}
+        public Tree(T value)
         {
-            this.RootNode = new Node(value);
+            RootNode = new Node<T>(value);
         }
 
-        public Tree(Node node)
+        public Tree(Node<T> node)
         {
             RootNode = node;
         }
 
         public Tree()
         {
-            RootNode = new Node();
+            
         }
         
-        public void InsertValue(int value)
+        public void InsertValue(T value)
         {
             InsertValue(RootNode, value);
         }
 
-        public void InsertValue(Node currentNode, int value)
+        public void InsertValue(Node<T> currentNode, T value)
         {
             
             int comparison = value.CompareTo(currentNode.Value);
             
-            if (comparison == -1)
+            if (0 > comparison)
             {
                 if (currentNode.LeftNode == null)
                 {
-                    currentNode.LeftNode = new Node(value);
+                    currentNode.LeftNode = new Node<T>(value);
                 }
                 else
                 {
                     InsertValue(currentNode.LeftNode, value);
                 }
             }
-            else if (comparison == 1)
+            else if (comparison >= 0)
             {
                 if (currentNode.RightNode == null)
                 {
-                    currentNode.RightNode = new Node(value);
+                    currentNode.RightNode = new Node<T>(value);
                 }
                 else
                 {
@@ -58,94 +58,12 @@ namespace BinaryTree
             }
         }
 
-        public bool IsTreeValid()
-        {
-            return IsTreeValid(this.RootNode);
-        }
-
-        private bool IsTreeValid(Node tree)
-        {
-            bool leftIsValid = (tree.LeftNode == null || (tree.LeftNode.Value > tree.Value && IsTreeValid(tree.LeftNode)) );
-            bool rightIsValid = (tree.RightNode == null || (tree.Value > tree.RightNode.Value && IsTreeValid(tree.RightNode)) );
-
-            return leftIsValid && rightIsValid;
-        }
-
-        public Node DeleteNode(int value)
-        {
-            return DeleteNode(value, this.RootNode);
-        }
-
-        public Node DeleteNode(int value, Node node)
-        {
-            if (node == null)
-                return null;
-
-            if (value == node.Value)
-            {
-                return performDelete(value, node);
-            }
-            //Else recurse on the subtree's:
-
-            node.LeftNode = DeleteNode(value, node.LeftNode);
-            node.RightNode = DeleteNode(value, node.RightNode);
-            
-            return node;
-        }
-
-        private Node performDelete(int value, Node node)
-        {
-            //The node is a leaf:
-            //delete the leaf node
-
-            if (node.RightNode == null && node.LeftNode == null)
-                return new Node();
-
-            //The node to be deleted only has one sub tree:
-            //link the child sub tree to the deleted parent
-
-            if (node.RightNode != null && node.LeftNode == null)
-                return node.RightNode;
-            
-            if(node.LeftNode != null && node.RightNode == null)
-                return node.LeftNode;
-
-            //The node has two sub tree's:
-               //traverse tree
-               //find the right sub nodes smallest entry and replace the newly deleted node
-
-            if(node.RightNode != null && node.LeftNode != null)
-            {
-                int valueToMove = findSmallestValue(node.RightNode).Value;
-                Node newSubTree = DeleteNode(valueToMove, node.RightNode);
-
-                return new Node(valueToMove) {LeftNode = node.LeftNode, RightNode = newSubTree};
-            }
-
-            throw new Exception("Case not descriped in delete function");
-        }
-
-        
-        private int? findSmallestValue(Node node)
-        {
-            if (node.LeftNode == null && node.RightNode == null)
-                return node.Value;
-
-            if(node.LeftNode != null || node.LeftNode.Value < node.Value)
-                return findSmallestValue(node.LeftNode);
-
-            if (node.RightNode != null || node.RightNode.Value < node.Value)
-                return findSmallestValue(node.RightNode);
-
-            return node.Value.Value;
-        }
-
-        public int GetMaxDepth(Node node)
+        public int GetMaxDepth(Node<T> node)
         {
             return GetMaxDepth(node, 1);
         }
 
-        public int GetMaxDepth(Node node, int depth)
+        public int GetMaxDepth(Node<T> node, int depth)
         {
             if (node.RightNode == null && node.LeftNode == null)
                 return depth;
@@ -168,46 +86,43 @@ namespace BinaryTree
             }
         }
 
-        public Node GetTargetNode(Queue<bool> nav)
-        {
-            var temp = getTargetNode(nav, RootNode);
-            return temp;
-        }
-
-        private Node getTargetNode(Queue<bool> navigation, Node node)
-        {
-            if (node == null || navigation.Count == 0)
-                return node;
-
-            //Going right:
-            if (navigation.Dequeue())
-            {
-                var temp = getTargetNode(navigation, node.RightNode);
-                return temp;
-            }
-            else
-            {
-                var temp = getTargetNode(navigation, node.LeftNode);
-                return temp;
-            }
-        }
+        
 
     }
 
-    public class Node
+    public class Node<T>
     {
-        public int? Value;
-        public Node LeftNode;
-        public Node RightNode;
+        public T Value { get; set; }
+        public Node<T> LeftNode { get; set; }
+        public Node<T> RightNode { get; set; }
 
         public Node()
         {
             
         }
 
-        public Node(int? value)
+        public Node(T value)
         {
             Value = value;
         }
     }
+
+    public static class Utilities
+    {
+
+        public static Node<T> GetTargetNode<T>(Queue<bool> navigation, Node<T> node)
+        {
+            if (navigation.Count == 0)
+                return node;
+
+            if (node == null)
+                throw new Exception("Unexpectedly encountered the end of the tree");
+
+            var nextNode = navigation.Dequeue() ? node.RightNode : node.LeftNode;
+
+            return GetTargetNode(navigation, nextNode);
+        }
+    }
+
+
 }
