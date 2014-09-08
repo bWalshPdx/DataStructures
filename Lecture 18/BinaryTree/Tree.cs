@@ -85,9 +85,6 @@ namespace BinaryTree
                 return right;
             }
         }
-
-        
-
     }
 
     public class Node<T>
@@ -95,6 +92,7 @@ namespace BinaryTree
         public T Value { get; set; }
         public Node<T> LeftNode { get; set; }
         public Node<T> RightNode { get; set; }
+        public int MaxDepth { get; set; }
 
         public Node()
         {
@@ -104,6 +102,7 @@ namespace BinaryTree
         public Node(T value)
         {
             Value = value;
+            this.MaxDepth = 0;
         }
     }
 

@@ -23,6 +23,12 @@ namespace BinaryTree
 
         public void InsertValue(T value)
         {
+            if (RootNode == null)
+            {
+                RootNode = new Node<T>(value);
+                return;
+            }
+            
             RootNode = InsertValue(RootNode, value);
         }
 
@@ -30,9 +36,11 @@ namespace BinaryTree
         {
             //Insert the RootNode:
             int comparison = value.CompareTo(currentNode.Value);
+            currentNode.MaxDepth++;
 
             if (comparison == -1)
             {
+                
                 if (currentNode.LeftNode == null)
                 {
                     currentNode.LeftNode = new Node<T>(value);
@@ -55,7 +63,17 @@ namespace BinaryTree
             }
             
             //Check Balance of the tree and rotate if needed:
-            var balanceValue = GetBalanceValue(currentNode);
+            int leftDepth = 0;
+            int rightDepth = 0;
+
+            if (currentNode.LeftNode != null)
+                leftDepth = currentNode.LeftNode.MaxDepth + 1;
+
+            if (currentNode.RightNode != null)
+                rightDepth = currentNode.RightNode.MaxDepth + 1;
+
+
+            var balanceValue = leftDepth - rightDepth;
 
             if (balanceValue <= -2)
                currentNode = Rotate(currentNode, true);
@@ -66,18 +84,15 @@ namespace BinaryTree
             return currentNode;
         }
 
-        public int GetBalanceValue(Node<T> node)
+        public void UpdateMaxDepth(Node<T> node)
         {
-            var leftDepth = 0;
-            var rightDepth = 0;
+            if (node == null)
+                return;
 
-            if (node.LeftNode != null)
-                leftDepth = GetMaxDepth(node.LeftNode) + 1;
+            node.MaxDepth = GetMaxDepth(node);
 
-            if(node.RightNode != null)
-                rightDepth = GetMaxDepth(node.RightNode) + 1;
-
-            return leftDepth - rightDepth;
+            UpdateMaxDepth(node.LeftNode);
+            UpdateMaxDepth(node.RightNode);
         }
 
         public int GetMaxDepth(Node<T> node)
@@ -131,6 +146,8 @@ namespace BinaryTree
                 newRoot.RightNode = newLeftChild;
                 newRoot.LeftNode = tailOfRoot;
             }
+
+            UpdateMaxDepth(newRoot);
 
             return newRoot;
         }

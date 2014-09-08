@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace BinaryTree
 {
+    using System.Diagnostics;
 
     [TestFixture]
     public class AVLSelfBalance_Tests
@@ -109,23 +110,23 @@ namespace BinaryTree
         }
 
 
-        [TestCaseSource("DifferentTreesAndBalances")]
-        public void GetBalanceValue_GetsCorrectValue(Node<int> tree, int expectedBalance)
-        {
+        //[TestCaseSource("DifferentTreesAndBalances")]
+        //public void GetBalanceValue_GetsCorrectValue(Node<int> tree, int expectedBalance)
+        //{
 
-            AVLTree<int> trb = new AVLTree<int>();
+        //    AVLTree<int> trb = new AVLTree<int>();
 
-            var output = trb.GetBalanceValue(tree);
+        //    var output = trb.GetBalanceValue(tree);
 
-            Assert.AreEqual(expectedBalance, output);
-        }
+        //    Assert.AreEqual(expectedBalance, output);
+        //}
 
         public Tree<int> LLTestTree()
         {
             var t = new Tree<int>(99);
             t.InsertValue(90);
             t.InsertValue(80);
-            
+
             return t;
         }
 
@@ -377,21 +378,22 @@ namespace BinaryTree
             
         }
         
-
+        
         [Test]
         public void InserValue_RootRotationHappens()
         {
-            var testTree = new Node<int>(3);
-            testTree.RightNode = new Node<int>(5);
+            //var testTree = new Node<int>(3);
+            //testTree.RightNode = new Node<int>(5);
 
             var expectedOutput = new Node<int>(5);
             expectedOutput.RightNode = new Node<int>(7);
             expectedOutput.LeftNode = new Node<int>(3);
 
-            var tr = new AVLTree<int>(testTree);
-            tr.InsertValue(7);
+            AVLTree<int> avl = new AVLTree<int>(new Node<int>(3));
+            avl.InsertValue(5);
+            avl.InsertValue(7);
 
-            var output = tr.RootNode;
+            var output = avl.RootNode;
 
             Assert.AreEqual(output.Value, expectedOutput.Value);
             Assert.AreEqual(output.RightNode.Value, expectedOutput.RightNode.Value);
@@ -408,6 +410,38 @@ namespace BinaryTree
             var output = Utilities.GetTargetNode(new Queue<bool>(new[] { false}), testTree);
 
             Assert.AreEqual(40, output.Value);
+        }
+
+        
+        [Test, Ignore]
+        public void InsertValue_WhatIsItsCurrentComplexity()
+        {
+            List<Tuple<long, long>> timeCollection = new List<Tuple<long, long>>();
+            int intervals = 1000;
+            int max = 100000;
+
+            for (int i = 0; i < max; i = i + intervals)
+            {
+                var range = Enumerable.Range(0, 10000);
+                AVLTree<int> tree = new AVLTree<int>();
+
+                Stopwatch sw = new Stopwatch();
+
+                sw.Start();
+                foreach (var element in range)
+                {
+                    tree.InsertValue(element);
+                }
+                sw.Stop();
+                timeCollection.Add(new Tuple<long, long>(i, sw.ElapsedMilliseconds));
+                sw.Reset();
+            }
+
+            foreach (var time in timeCollection)
+            {
+                Console.WriteLine("'{0}', '{1}'", time.Item1, time.Item2);
+            }
+
         }
     }
 }
